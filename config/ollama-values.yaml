@@ -1,0 +1,19 @@
+# values.yaml
+ollama:
+  gpu:
+    enabled: true
+    type: "nvidia"
+    number: 1
+  resources:
+    limits:
+      nvidia.com/gpu: "1"
+    requests:
+      nvidia.com/gpu: "1"
+  persistentVolume:
+    enabled: true
+    size: 100Gi
+    storageClass: "standard-rwo"  # GCP default storage class
+  models:
+    pull:
+      - phi4 
+      - deepseek-r1:8b

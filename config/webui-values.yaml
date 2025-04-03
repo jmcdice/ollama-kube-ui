@@ -1,0 +1,34 @@
+image:
+  tag: latest
+
+service:
+  type: LoadBalancer
+  port: 8080
+
+extraEnvVars:
+  - name: OLLAMA_BASE_URL
+    value: "http://ollama.ollama.svc.cluster.local:11434"
+  - name: DEFAULT_MODELS
+    value: "phi4"
+  - name: ENABLE_OLLAMA_API
+    value: "true"
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "500m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"
+
+ingress:
+  enabled: false
+
+ollama:
+  enabled: false
+  service:
+    enabled: false
+
+pipelines:
+  enabled: false
+
