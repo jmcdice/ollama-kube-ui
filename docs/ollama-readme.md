@@ -88,7 +88,7 @@ Forwarding from 127.0.0.1:11434 -> 11434
 In a new terminal, verify which models Ollama has loaded:
 
 ```bash
-curl http://localhost:11434/api/tags
+curl -s http://localhost:11434/api/tags
 ```
 
 **Example response:**
@@ -116,7 +116,7 @@ Now for the fun part - let's talk to our AI model!
 To see everything Ollama returns, including technical details:
 
 ```bash
-curl -X POST http://localhost:11434/api/generate -d '{"model": "phi4", "prompt": "Hello, world!", "stream": false}' | jq
+curl -s -X POST http://localhost:11434/api/generate -d '{"model": "phi4", "prompt": "Hello, world!", "stream": false}' | jq
 ```
 
 **Example response:**
@@ -153,7 +153,7 @@ curl -X POST http://localhost:11434/api/generate -d '{"model": "phi4", "prompt":
 For a cleaner output with only the AI's response:
 
 ```bash
-curl -X POST http://localhost:11434/api/generate -d '{"model": "phi4", "prompt": "Hello, world!", "stream": false}' | jq -r '.response'
+curl -s -X POST http://localhost:11434/api/generate -d '{"model": "phi4", "prompt": "Hello, world!", "stream": false}' | jq -r '.response'
 ```
 
 **Example response:**

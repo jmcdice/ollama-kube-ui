@@ -152,5 +152,23 @@ When demonstrating to students, try these advanced questions that showcase DeepS
 
 5. "Explain quantum computing algorithms to a CS student who understands classical algorithms. What makes Shor's algorithm and Grover's algorithm significant?"
 
+6. Create a complete, self-contained Python game that demonstrates your coding capabilities. The game should be:
+
+- A text-based adventure or simple arcade-style game
+- Between 100-300 lines of code
+- Well-commented and easy to understand
+- Runnable with standard Python libraries only (no external dependencies)
+- Include at least 3 of these elements:
+   - A player character with stats/inventory
+   - Multiple levels or rooms to explore
+   - Random encounters or events
+   - A scoring system
+   - Simple combat mechanics
+   - An end goal or win condition
+
+Structure the code properly with classes or functions, handle user input correctly, and ensure the game logic works from start to finish without errors.
+
+Begin your response with a brief description of the game, then provide the complete code without omitting any parts.
+
 ---
 

@@ -8,7 +8,7 @@ source env.sh
 
 # Function to check required variables
 check_required_vars() {
-    local required_vars=("ZONE" "CLUSTER_NAME" "MACHINE_TYPE" "NUM_NODES")
+    local required_vars=("ZONE" "CLUSTER_NAME" "MAIN_MACHINE_TYPE" "GPU_MACHINE_TYPE" "NUM_NODES")
     local missing_vars=()
 
     for var in "${required_vars[@]}"; do
@@ -41,11 +41,10 @@ create_main_cluster() {
     echo -n "[1/4] Creating GKE cluster '$CLUSTER_NAME' [⠋] "
     gcloud config set compute/zone "$ZONE" --quiet >/dev/null 2>&1
     
-    # Run cluster creation in background and capture output
     gcloud container clusters create "$CLUSTER_NAME" \
         --zone "$ZONE" \
         --num-nodes "$NUM_NODES" \
-        --machine-type "$MACHINE_TYPE" \
+        --machine-type "$MAIN_MACHINE_TYPE" \
         --enable-autoupgrade \
         --enable-autorepair \
         --scopes cloud-platform \
@@ -54,7 +53,6 @@ create_main_cluster() {
     
     spinner "$pid"
     if ! wait "$pid"; then
-        # Parse error from output
         local error_line=$(grep -o "ERROR:.*" cluster_output.txt || echo "Unknown error")
         local reason=""
         local details=""
@@ -73,16 +71,30 @@ create_main_cluster() {
         rm cluster_output.txt
         exit 1
     fi
-    
-    # Extract key info from output
-    local master_ip=$(grep "MASTER_IP" cluster_output.txt | awk '{print $5}')
-    local status=$(grep "STATUS" cluster_output.txt | awk '{print $7}')
     rm cluster_output.txt
+}
+
+# Function to display cluster info
+cluster_info() {
+    # Small delay to ensure GKE registers the cluster
+    sleep 2
     
-    echo "[1/4] Cluster '$CLUSTER_NAME' created! [✔]"
-    echo "      Location: $ZONE  |  IP: $master_ip"
-    echo "      Type: $MACHINE_TYPE     |  Nodes: $NUM_NODES"
-    echo "      Status: $status"
+    # Get cluster details from gcloud container clusters list
+    local cluster_info=$(gcloud container clusters list --filter="name=$CLUSTER_NAME" --format="value(endpoint, status)")
+    local master_ip=$(echo "$cluster_info" | awk '{print $1}')
+    local status=$(echo "$cluster_info" | awk '{print $2}')
+    
+    if [[ -z "$master_ip" || -z "$status" ]]; then
+        echo "[1/4] Cluster '$CLUSTER_NAME' created, but details unavailable [✔]"
+        echo "      Location: $ZONE  |  IP: Unknown (check 'gcloud container clusters list')"
+        echo "      Type: $MAIN_MACHINE_TYPE     |  Nodes: $NUM_NODES"
+        echo "      Status: Unknown (check 'gcloud container clusters list')"
+    else
+        echo "[1/4] Cluster '$CLUSTER_NAME' created! [✔]"
+        echo "      Location: $ZONE  |  IP: $master_ip"
+        echo "      Type: $MAIN_MACHINE_TYPE     |  Nodes: $NUM_NODES"
+        echo "      Status: $status"
+    fi
     echo
 }
 
@@ -92,7 +104,7 @@ add_gpu_node_pool() {
     gcloud container node-pools create "gpu-pool" \
         --cluster "$CLUSTER_NAME" \
         --zone "$ZONE" \
-        --machine-type "$MACHINE_TYPE" \
+        --machine-type "$GPU_MACHINE_TYPE" \
         --accelerator "type=nvidia-tesla-t4,count=1" \
         --num-nodes 1 \
         --enable-autoupgrade \
@@ -110,7 +122,7 @@ add_gpu_node_pool() {
     
     local disk_size="100 GB"
     echo "[2/4] GPU pool added! [✔]"
-    echo "      Type: $MACHINE_TYPE  |  Disk: $disk_size"
+    echo "      Type: $GPU_MACHINE_TYPE  |  Disk: $disk_size"
     echo
     rm nodepool_output.txt
 }
@@ -159,6 +171,7 @@ main() {
     check_required_vars
     
     create_main_cluster
+    cluster_info
     add_gpu_node_pool
     configure_kubectl
     verify_nodes
