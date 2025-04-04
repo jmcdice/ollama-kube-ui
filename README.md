@@ -1,6 +1,6 @@
 # OllamaKubeUI
 
-A repository for deploying GPU-enabled Kubernetes clusters on GCP with Ollama AI model server and Open WebUI. Built for CS students to explore cloud computing, Kubernetes, and AI technologies.
+An open-source alternative to ChatGPT that deploys powerful AI models on your own cloud infrastructure. This project serves as an end-to-end tutorial for CS students and software engineers to explore modern cloud architecture, containerization, and AI deployment - from theory to running code.
 
 ## Overview
 

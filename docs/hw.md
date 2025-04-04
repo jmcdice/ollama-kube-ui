@@ -21,13 +21,18 @@
   * Utilization: Mere 5-15%
   * Power usage: ~100-200W per server
 
+* **Real-World Example**: 📊
+  * Web server: One physical machine for Apache (5-15% CPU utilization)
+  * Database: Another physical machine for MySQL (similarly underutilized)
+  * 10 apps = 10 physical servers (regardless of load)
+
 -> *"This setup actually worked pretty well for the time!"* <-
 
 ---
 
 # ERA 2: The Virtualization Revolution (2005-2010)
 
-* **Hardware Leaps Forward**:
+* **Hardware Leaps Forward**: ⬆️
   * **CPU**: Dual/Quad-core Xeon processors at 2-3 GHz
   * **RAM**: 4GB to 32GB
   * **Storage**: Hundreds of gigabytes
@@ -38,17 +43,21 @@
   * Expensive machines running at 10-15% capacity
   * A massive waste of computing resources
 
-* **Enter VMware**:
+* **Enter VMware**: 🔄
   * Multiple virtual machines on one physical server
   * Each VM thinks it has dedicated hardware
   * 5-15 VMs per physical server
   * Utilization improved to 15-30%
 
+* **Real-World Example**:
+  * 1 physical server could now host 10+ small web applications
+  * Corporate data center footprint reduced by ~70%
+
 ---
 
 # ERA 3: The Container Era (2015 onwards)
 
-* **Hardware Evolution (2015-2020)**:
+* **Hardware Evolution (2015-2020)**: 🚀
   * **CPU**: 32-64 cores across multiple sockets
   * **RAM**: 256GB to 512GB configurations
   * **Storage**: Terabytes, with SSDs becoming the norm
@@ -66,21 +75,29 @@
   * TPUs and custom ASICs
   * Significantly better performance/watt ratio
 
+* **Real-World Example**:
+  * Single server now capable of hosting 100s of microservices
+  * AI model inference that once required a rack now runs on a fraction of a server
+
 ---
 
 # ERA 3: The VM Limitation & Container Solution
 
-* **VM Limitations**:
+* **VM Limitations**: ⚠️
   * Each needs its own OS and dedicated memory
   * Startup time: Minutes
   * Still not maximizing utilization
 
-* **Containers to the Rescue**:
+* **Containers to the Rescue**: 📦
   * Virtualize just the application environment
   * Share the same OS kernel
   * Hundreds of containers per server
   * Startup time: Seconds instead of minutes
   * Resource overhead: Dramatically reduced
+
+* **Real-World Example**:
+  * Netflix: 0.5M+ Docker containers running on ~10K VMs
+  * Google: Billions of containers launched weekly using Kubernetes
 
 ---
 
@@ -96,6 +113,11 @@
   * Containers from different applications/teams/companies
   * All sharing underlying hardware
   * Utilization: 60-80%
+
+* **Cost Efficiency**: 💰
+  * ERA 1 (1995): ~$100,000 per 100 applications
+  * ERA 2 (2005): ~$30,000 per 100 applications
+  * ERA 3 (2025): ~$3,000 per 100 applications (10x reduction per decade)
 
 ---
 
@@ -128,6 +150,25 @@
 
 ---
 
+# Current Challenges in Container Era 🔍
+
+* **Security Concerns**:
+  * Container isolation not as strong as VMs
+  * Supply chain vulnerabilities through dependencies
+  * Shared kernel security implications
+
+* **Operational Complexity**:
+  * Managing thousands of ephemeral entities
+  * Monitoring and observability at scale
+  * Configuration management across environments
+
+* **Resource Optimization**:
+  * Right-sizing containers remains challenging
+  * Cold starts for serverless containers
+  * State management and persistence
+
+---
+
 -> # The Full Journey <-
 
 -> From physical servers @ 15% capacity <-
@@ -136,6 +177,27 @@
 
 ---
 
--> # Thank You! <-
+# CS Concepts Connection 🎓
 
--> Questions? <-
+* **Distributed Systems**: Containers enable practical study of distributed computing patterns
+* **Resource Scheduling**: Bin-packing algorithms applied to container placement
+* **Virtualization Layers**: Nested abstraction from hardware to hypervisor to OS to container
+* **Networking**: Overlay networks, service discovery, and software-defined networking
+* **Storage Abstractions**: Volume plugins, persistence, and stateful applications
+
+-> **Key Takeaway**: Modern infrastructure is an applied computer science laboratory <-
+
+---
+
+# Learn More 📚
+
+* **Interactive Tutorials**:
+  * Kubernetes.io - Interactive Tutorials
+  * Docker Labs - Container Training
+  * KataKoda - Container Scenarios
+
+* **Books & Documentation**:
+  * "Kubernetes Up & Running" - Kelsey Hightower
+  * "Designing Distributed Systems" - Brendan Burns
+  * Kubernetes Documentation
+
